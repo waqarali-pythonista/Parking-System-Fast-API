@@ -1,0 +1,10 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+jose
+passlib
+alembic
+python-dotenv
+pytest
+fastapi-testclient
