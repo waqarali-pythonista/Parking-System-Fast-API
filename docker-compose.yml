@@ -2,17 +2,45 @@ version: '3.8'
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: parking-system-container
+    build: .
+    container_name: parking_system_container  
     ports:
-      - "8080:8000"  # Map port 8080 on the host to port 8000 in the container
-    env_file:
-      - .env         # Use the .env file for environment variables
+      - "${BACKEND_PORT}:${BACKEND_PORT}"
+    
+    environment:
+    - SECRET_KEY=${SECRET_KEY}
+    - ALGORITHM=${ALGORITHM}
+    - ACCESS_TOKEN_EXPIRE_MINUTES=${ACCESS_TOKEN_EXPIRE_MINUTES}
+    - SMTP_SERVER=${SMTP_SERVER}
+    - SMTP_PORT=${SMTP_PORT}
+    - SMTP_USER=${SMTP_USER}
+    - SMTP_PASSWORD=${SMTP_PASSWORD}
+    - BACKEND_PORT=${BACKEND_PORT}
+    - DATABASE_URL=${DATABASE_URL}
+
+    depends_on:
+      - postgres
+    networks:
+      - backend_network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+      POSTGRES_HOST: "${POSTGRES_HOST}"
     volumes:
-      - .:/app       # Mount the current directory into the container
-    command: >
-      uvicorn app.main:app 
-      --host 0.0.0.0 
-      --port 8000
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backend_network
+
+networks:
+  backend_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
