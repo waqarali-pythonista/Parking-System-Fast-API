@@ -25,7 +25,7 @@ services:
 
   postgres:
     image: postgres:latest
-    container_name: postgres
+    container_name: pg_pk_sys_db
     ports:
       - "${POSTGRES_PORT}:5432"
     environment:
