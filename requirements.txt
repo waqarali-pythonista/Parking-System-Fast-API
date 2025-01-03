@@ -7,4 +7,4 @@ passlib
 alembic
 python-dotenv
 pytest
-fastapi-testclient
+httpx
