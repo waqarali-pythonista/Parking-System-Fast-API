@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: parking-system-container
+    ports:
+      - "8080:8000"  # Map port 8080 on the host to port 8000 in the container
+    env_file:
+      - .env         # Use the .env file for environment variables
+    volumes:
+      - .:/app       # Mount the current directory into the container
+    command: >
+      uvicorn app.main:app 
+      --host 0.0.0.0 
+      --port 8000
