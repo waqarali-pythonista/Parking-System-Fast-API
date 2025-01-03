@@ -21,4 +21,4 @@ RUN pip install --no-cache-dir --upgrade pip && \
 EXPOSE ${PORT}
 
 # Run the FastAPI application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "{PORT}"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "${PORT}"]
